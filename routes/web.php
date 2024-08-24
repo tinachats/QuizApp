@@ -1,20 +1,17 @@
 <?php
 
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuestionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::inertia('/', 'Home')->name('home');
+Route::inertia('/', 'Home', [
+    'appVersion' => Application::VERSION
+])->name('home');
 
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
+Route::get('/questions', [QuestionController::class, 'index'])->name('questions');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Questions;
+use App\Models\Question;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
-class QuestionsController extends Controller
+class QuestionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return Inertia::render('Questions');
     }
 
     /**
@@ -34,7 +35,7 @@ class QuestionsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Questions $questions)
+    public function show(Question $question)
     {
         //
     }
@@ -42,7 +43,7 @@ class QuestionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Questions $questions)
+    public function edit(Question $question)
     {
         //
     }
@@ -50,7 +51,7 @@ class QuestionsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Questions $questions)
+    public function update(Request $request, Question $question)
     {
         //
     }
@@ -58,7 +59,7 @@ class QuestionsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Questions $questions)
+    public function destroy(Question $question)
     {
         //
     }
