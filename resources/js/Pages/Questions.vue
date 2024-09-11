@@ -1,16 +1,15 @@
 <script setup>
-    import { Head, Link, useForm } from '@inertiajs/vue3';
+    import { Head, router, usePage } from '@inertiajs/vue3';
     import Layout from '@/Layouts/Layout.vue';
     import NewQuestionModal from '@/Layouts/NewQuestionModal.vue';
-    import { ref } from 'vue';
+    import { computed, ref } from 'vue';
 
+    const page = usePage();
+    const successAlert = computed(() => page.props.flash.success);
     const showModal = ref(false);
     const createdQuestion = ref(null);
     const answers = ref([]);
     const selectedAnswer = ref(null);
-    let errors = true;
-
-    let questionError = document.getElementById('question-error');
 
     // Initialize answers with an ID of 1
     let answerId = 1;
@@ -37,39 +36,44 @@
         });
     }
 
-    function countAnswers() {
-        if (answers.length === 4) {
-            errors = false;
-        } else {
-            errors = true;
+    function validateAnswers() {
+        for (const answer of answers.value) {
+            if (answer.answer.trim() === '') {
+                return false;
+            }
         }
-        return errors;
+        return true;
     }
 
-    function hasErrors() {
-        if (!createdQuestion.value) {
-            errors = true;
-        } else {
-            errors = false;
+    function countAnswers() {
+        if (answers.length < 4) {
+            alert('Four answers are required to save the question.');
+        } else if (answers.length === 4) {
+            return true;
         }
-        return errors;
+        return false;
     }
 
     function saveQuestion() {
         if (!createdQuestion.value) {
             alert('Question field cannot be blank.');
-            errors = true;
+            return false;
         }
 
-        if (hasErrors && countAnswers) {
-            alert('Your answers are not sufficient.');
-            errors = true;
+        if (!validateAnswers() && !countAnswers()) {
+            alert('Fill all the forms before submitting.');
+            return false;
         }
 
-        if (!errors) {
-            alert('Saving your question and answers.');
-            return true;
-        }
+        alert('Saving the question and it\'s answers.');
+        
+        router.post('/questions', {
+            question: createdQuestion.value,
+            answers: answers.value 
+        });
+
+        console.log('Question: ', createdQuestion.value);
+        console.log('Answers: ', answers.value);
     }
 </script>
 
@@ -99,6 +103,11 @@
         <NewQuestionModal :show="showModal" @close="showModal = false">
             <template #header>
                 <h5 class="fw-bold">Add a new Question</h5>
+            </template>
+            <template #success>
+                <div class="alert alert-success" role="alert" v-if="successAlert">
+                    {{ successAlert }}
+                </div>
             </template>
             <template #body>
                 <div class="form-floating mb-3">

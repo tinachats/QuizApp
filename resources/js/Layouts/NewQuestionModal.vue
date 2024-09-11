@@ -12,6 +12,10 @@
                     <slot name="header"></slot>
                 </div>
 
+                <div>
+                    <slot name="success"></slot>
+                </div>
+
                 <div class="modal-body">
                     <slot name="body"></slot>
                 </div>

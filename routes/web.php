@@ -12,6 +12,7 @@ Route::inertia('/', 'Home', [
 ])->name('home');
 
 Route::get('/questions', [QuestionController::class, 'index'])->name('questions');
+Route::post('/questions', [QuestionController::class, 'store'])->name('questions.store');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
